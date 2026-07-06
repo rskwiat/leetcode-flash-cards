@@ -1,0 +1,30 @@
+.quiz-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  padding: 32px 20px;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.quiz-screen__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quiz-screen__progress {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--text);
+}
+
+.quiz-screen__score {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--text);
+}
+

@@ -1,0 +1,33 @@
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 24px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--code-bg);
+  transition: background 0.3s, color 0.3s;
+}
+
+.timer--urgent {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.1);
+  animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 1; }
+  to { opacity: 0.5; }
+}
+
+.timer__label {
+  font-size: 14px;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.timer__value {
+  font-weight: 600;
+}
