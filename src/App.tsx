@@ -10,6 +10,7 @@ import './App.css'
 function App() {
   const { state, startQuiz, answer, advance, tick, playAgain } = useQuiz()
 
+  
   const handleStart = useCallback(() => {
     startQuiz(questions)
   }, [startQuiz])
