@@ -14,12 +14,12 @@ function roundPct(correct: number, total: number): string {
 }
 
 const TAG_SLUGS: Record<string, string> = {
-  'Hash map / frequency count': 'hash-map',
+  'Hash map / frequency count': 'hash-function',
   'Sliding window': 'sliding-window',
   'Binary search': 'binary-search',
   'Fast & slow pointers': 'two-pointers',
   'BFS (breadth-first search)': 'breadth-first-search',
-  'Intervals (sort + sweep)': 'intervals',
+  'Intervals (sort + sweep)': 'sorting',
   'DFS (depth-first search)': 'depth-first-search',
   'Dynamic programming': 'dynamic-programming',
   'Heap / priority queue': 'heap-priority-queue',
@@ -53,13 +53,18 @@ export function ResultScreen({ score, total, questions, answers, onPlayAgain }: 
         <span className="result-screen__score-total">{total}</span>
       </div>
       <p className="result-screen__pct">{pct}%</p>
+        <div className="result-screen__round-header">Round 1 — {round1Correct}/{round1Questions.length} ({roundPct(round1Correct, round1Questions.length)})</div>
 
-      <div className="result-screen__round-header">Round 1 — {round1Correct}/{round1Questions.length} ({roundPct(round1Correct, round1Questions.length)})</div>
-      {round1Questions.map(q => renderCard(q, answerByQuestion))}
 
-      <div className="result-screen__round-header">Round 2 — {round2Correct}/{round2Questions.length} ({roundPct(round2Correct, round2Questions.length)})</div>
-      {round2Questions.map(q => renderCard(q, answerByQuestion))}
+        <div className="result-screen__card_container">
+          {round1Questions.map(q => renderCard(q, answerByQuestion))}
+        </div>
 
+        <div className="result-screen__round-header">Round 2 — {round2Correct}/{round2Questions.length} ({roundPct(round2Correct, round2Questions.length)})</div>
+
+      <div className="result-screen__card_container">
+        {round2Questions.map(q => renderCard(q, answerByQuestion))}
+      </div>
       <button className="result-screen__button" onClick={onPlayAgain}>
         Play Again
       </button>

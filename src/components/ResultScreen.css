@@ -69,9 +69,14 @@
   color: var(--text-h);
   text-align: center;
   padding: 8px 16px;
-  background: var(--bg-secondary, #f5f5f5);
   border-radius: 8px;
   width: 100%;
+}
+
+.result-screen__card_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
 .result-screen__card {
@@ -80,10 +85,9 @@
   padding: 16px;
   width: 100%;
   box-sizing: border-box;
-}
-
-.result-screen__card + .result-screen__card {
-  margin-top: 12px;
+  height: 260px;
+  display: flex;
+  flex-direction: column;
 }
 
 .result-screen__card-header {
@@ -117,7 +121,8 @@
 
 .result-screen__stem {
   font-size: 15px;
-  color: var(--text);
+  color: #666;
+
   line-height: 1.4;
   margin: 0;
 }
@@ -135,7 +140,7 @@
 }
 
 .result-screen__answer-row strong {
-  color: var(--text-h);
+  color: #666;
   font-weight: 600;
 }
 
@@ -149,7 +154,7 @@
 
 .result-screen__practice-link {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: auto;
   padding: 8px 16px;
   font-size: 14px;
   font-weight: 600;
