@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { toast } from 'react-toastify'
 import { Timer } from './Timer'
 import { QuestionCard } from './QuestionCard'
 import { useTimer } from '../hooks/useTimer'
 import type { QuizState } from '../hooks/useQuiz'
 import './QuizScreen.css'
+
+const DEBUG = new URLSearchParams(window.location.search).has('debug')
 
 interface QuizScreenProps {
   state: QuizState
@@ -23,18 +25,6 @@ export function QuizScreen({ state, onAnswer, onAdvance, onTick, onSkipToEnd }: 
   const toastFired = useRef(false)
 
   useTimer(state.phase === 'playing', onTick)
-
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'D') {
-      e.preventDefault()
-      onSkipToEnd()
-    }
-  }, [onSkipToEnd])
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleKeyDown])
 
   useEffect(() => {
     if (state.phase === 'feedback' && !toastFired.current) {
@@ -70,6 +60,12 @@ export function QuizScreen({ state, onAnswer, onAdvance, onTick, onSkipToEnd }: 
         onAnswer={onAnswer}
         disabled={isFeedback}
       />
+
+      {DEBUG && (
+        <button className="quiz-screen__debug-btn" onClick={onSkipToEnd}>
+          Skip to End
+        </button>
+      )}
     </div>
   )
 }

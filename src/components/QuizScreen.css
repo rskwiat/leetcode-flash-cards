@@ -28,3 +28,19 @@
   color: var(--text);
 }
 
+.quiz-screen__debug-btn {
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px dashed #ef4444;
+  border-radius: 10px;
+  background: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.quiz-screen__debug-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
