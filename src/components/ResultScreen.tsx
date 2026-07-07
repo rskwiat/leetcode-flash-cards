@@ -13,6 +13,28 @@ function roundPct(correct: number, total: number): string {
   return total === 0 ? '0%' : `${Math.round((correct / total) * 100)}%`
 }
 
+const TAG_SLUGS: Record<string, string> = {
+  'Hash map / frequency count': 'hash-map',
+  'Sliding window': 'sliding-window',
+  'Binary search': 'binary-search',
+  'Fast & slow pointers': 'two-pointers',
+  'BFS (breadth-first search)': 'breadth-first-search',
+  'Intervals (sort + sweep)': 'intervals',
+  'DFS (depth-first search)': 'depth-first-search',
+  'Dynamic programming': 'dynamic-programming',
+  'Heap / priority queue': 'heap-priority-queue',
+  'Stack': 'stack',
+  'Two pointers': 'two-pointers',
+  'Topological sort': 'topological-sort',
+}
+
+function tagUrl(answerText: string): string {
+  const slug = TAG_SLUGS[answerText]
+  return slug
+    ? `https://leetcode.com/problem-list/${slug}/`
+    : `https://leetcode.com/problemset/?search=${encodeURIComponent(answerText)}`
+}
+
 export function ResultScreen({ score, total, questions, answers, onPlayAgain }: ResultScreenProps) {
   const pct = Math.round((score / total) * 100)
   const answerByQuestion = new Map(questions.map((q, i) => [q.id, answers[i]]))
@@ -49,7 +71,7 @@ function renderCard(q: Question, answerByQuestion: Map<number, number | null>) {
   const userAnswer = answerByQuestion.get(q.id) ?? null
   const isCorrect = userAnswer === q.correctIndex
 
-  const searchUrl = `https://leetcode.com/problemset/?search=${encodeURIComponent(q.options[q.correctIndex])}`
+  const practiceUrl = tagUrl(q.options[q.correctIndex])
 
   return (
     <div key={q.id} className="result-screen__card">
@@ -69,7 +91,7 @@ function renderCard(q: Question, answerByQuestion: Map<number, number | null>) {
       </div>
       <a
         className="result-screen__practice-link"
-        href={searchUrl}
+        href={practiceUrl}
         target="_blank"
         rel="noopener noreferrer"
       >
