@@ -48,7 +48,6 @@ function renderCard(q: Question, idx: number, allQuestions: Question[], answers:
   const questionIndex = allQuestions.indexOf(q)
   const userAnswer = answers[questionIndex]
   const isCorrect = userAnswer === q.correctIndex
-  const label = isCorrect ? 'Correct' : 'Incorrect'
 
   const encode = (s: string) => encodeURIComponent(s)
   const searchUrl = `https://leetcode.com/problemset/?search=${encode(q.options[q.correctIndex])}`
@@ -65,11 +64,9 @@ function renderCard(q: Question, idx: number, allQuestions: Question[], answers:
         <div className={`result-screen__answer-row ${userAnswer === null ? 'result-screen__answer-row--incorrect' : userAnswer !== q.correctIndex ? 'result-screen__answer-row--incorrect' : ''}`}>
           <strong>Your answer:</strong> {userAnswer !== null ? q.options[userAnswer] : 'Time ran out'}
         </div>
-        {!isCorrect && (
-          <div className="result-screen__answer-row result-screen__answer-row--correct">
-            <strong>Correct answer:</strong> {q.options[q.correctIndex]}
-          </div>
-        )}
+        <div className="result-screen__answer-row result-screen__answer-row--correct">
+          <strong>Correct answer:</strong> {q.options[q.correctIndex]}
+        </div>
       </div>
       <a
         className="result-screen__practice-link"
