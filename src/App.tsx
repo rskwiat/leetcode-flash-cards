@@ -8,7 +8,7 @@ import { ResultScreen } from './components/ResultScreen'
 import './App.css'
 
 function App() {
-  const { state, startQuiz, answer, advance, tick, playAgain } = useQuiz()
+  const { state, startQuiz, answer, advance, tick, playAgain, skipToEnd } = useQuiz()
 
   const handleStart = useCallback(() => {
     startQuiz(questions)
@@ -24,6 +24,7 @@ function App() {
           onAnswer={answer}
           onAdvance={advance}
           onTick={tick}
+          onSkipToEnd={skipToEnd}
         />
       )}
 

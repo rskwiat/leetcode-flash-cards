@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { toast } from 'react-toastify'
 import { Timer } from './Timer'
 import { QuestionCard } from './QuestionCard'
@@ -11,9 +11,10 @@ interface QuizScreenProps {
   onAnswer: (index: number) => void
   onAdvance: () => void
   onTick: () => void
+  onSkipToEnd: () => void
 }
 
-export function QuizScreen({ state, onAnswer, onAdvance, onTick }: QuizScreenProps) {
+export function QuizScreen({ state, onAnswer, onAdvance, onTick, onSkipToEnd }: QuizScreenProps) {
   const question = state.questions[state.currentIndex]
   const total = state.questions.length
   const answeredCount = state.answers.length
@@ -22,6 +23,18 @@ export function QuizScreen({ state, onAnswer, onAdvance, onTick }: QuizScreenPro
   const toastFired = useRef(false)
 
   useTimer(state.phase === 'playing', onTick)
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'D') {
+      e.preventDefault()
+      onSkipToEnd()
+    }
+  }, [onSkipToEnd])
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
 
   useEffect(() => {
     if (state.phase === 'feedback' && !toastFired.current) {
