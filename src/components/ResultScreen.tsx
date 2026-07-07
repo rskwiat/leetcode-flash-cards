@@ -9,13 +9,18 @@ interface ResultScreenProps {
   onPlayAgain: () => void
 }
 
+function roundPct(correct: number, total: number): string {
+  return total === 0 ? '0%' : `${Math.round((correct / total) * 100)}%`
+}
+
 export function ResultScreen({ score, total, questions, answers, onPlayAgain }: ResultScreenProps) {
   const pct = Math.round((score / total) * 100)
+  const answerByQuestion = new Map(questions.map((q, i) => [q.id, answers[i]]))
 
   const round1Questions = questions.filter(q => q.round === 1)
   const round2Questions = questions.filter(q => q.round === 2)
-  const round1Correct = round1Questions.filter(q => answers[questions.indexOf(q)] === q.correctIndex).length
-  const round2Correct = round2Questions.filter(q => answers[questions.indexOf(q)] === q.correctIndex).length
+  const round1Correct = round1Questions.filter(q => answerByQuestion.get(q.id) === q.correctIndex).length
+  const round2Correct = round2Questions.filter(q => answerByQuestion.get(q.id) === q.correctIndex).length
 
   return (
     <div className="result-screen">
@@ -27,15 +32,11 @@ export function ResultScreen({ score, total, questions, answers, onPlayAgain }: 
       </div>
       <p className="result-screen__pct">{pct}%</p>
 
-      <div className="result-screen__round-header">Round 1 — {round1Correct}/{round1Questions.length} ({Math.round((round1Correct / round1Questions.length) * 100)}%)</div>
-      {questions
-        .filter(q => q.round === 1)
-        .map((q, idx) => renderCard(q, idx, questions, answers, 'round1'))}
+      <div className="result-screen__round-header">Round 1 — {round1Correct}/{round1Questions.length} ({roundPct(round1Correct, round1Questions.length)})</div>
+      {round1Questions.map(q => renderCard(q, answerByQuestion))}
 
-      <div className="result-screen__round-header">Round 2 — {round2Correct}/{round2Questions.length} ({Math.round((round2Correct / round2Questions.length) * 100)}%)</div>
-      {questions
-        .filter(q => q.round === 2)
-        .map((q, idx) => renderCard(q, idx, questions, answers, 'round2'))}
+      <div className="result-screen__round-header">Round 2 — {round2Correct}/{round2Questions.length} ({roundPct(round2Correct, round2Questions.length)})</div>
+      {round2Questions.map(q => renderCard(q, answerByQuestion))}
 
       <button className="result-screen__button" onClick={onPlayAgain}>
         Play Again
@@ -44,16 +45,14 @@ export function ResultScreen({ score, total, questions, answers, onPlayAgain }: 
   )
 }
 
-function renderCard(q: Question, idx: number, allQuestions: Question[], answers: (number | null)[], prefix: string) {
-  const questionIndex = allQuestions.indexOf(q)
-  const userAnswer = answers[questionIndex]
+function renderCard(q: Question, answerByQuestion: Map<number, number | null>) {
+  const userAnswer = answerByQuestion.get(q.id) ?? null
   const isCorrect = userAnswer === q.correctIndex
 
-  const encode = (s: string) => encodeURIComponent(s)
-  const searchUrl = `https://leetcode.com/problemset/?search=${encode(q.options[q.correctIndex])}`
+  const searchUrl = `https://leetcode.com/problemset/?search=${encodeURIComponent(q.options[q.correctIndex])}`
 
   return (
-    <div key={prefix + '-' + idx} className="result-screen__card">
+    <div key={q.id} className="result-screen__card">
       <div className="result-screen__card-header">
         <div className={`result-screen__badge ${isCorrect ? 'result-screen__badge--correct' : 'result-screen__badge--incorrect'}`}>
           {isCorrect ? '✓' : '✗'}
