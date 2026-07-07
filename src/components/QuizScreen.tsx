@@ -6,14 +6,17 @@ import { useTimer } from '../hooks/useTimer'
 import type { QuizState } from '../hooks/useQuiz'
 import './QuizScreen.css'
 
+const DEBUG = new URLSearchParams(window.location.search).has('debug')
+
 interface QuizScreenProps {
   state: QuizState
   onAnswer: (index: number) => void
   onAdvance: () => void
   onTick: () => void
+  onSkipToEnd: () => void
 }
 
-export function QuizScreen({ state, onAnswer, onAdvance, onTick }: QuizScreenProps) {
+export function QuizScreen({ state, onAnswer, onAdvance, onTick, onSkipToEnd }: QuizScreenProps) {
   const question = state.questions[state.currentIndex]
   const total = state.questions.length
   const answeredCount = state.answers.length
@@ -57,6 +60,12 @@ export function QuizScreen({ state, onAnswer, onAdvance, onTick }: QuizScreenPro
         onAnswer={onAnswer}
         disabled={isFeedback}
       />
+
+      {DEBUG && (
+        <button className="quiz-screen__debug-btn" onClick={onSkipToEnd}>
+          Skip to End
+        </button>
+      )}
     </div>
   )
 }

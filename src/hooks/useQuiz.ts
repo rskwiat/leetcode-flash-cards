@@ -16,6 +16,7 @@ type QuizAction =
   | { type: 'TICK' }
   | { type: 'ADVANCE' }
   | { type: 'PLAY_AGAIN' }
+  | { type: 'SKIP_TO_END' }
 
 const INITIAL_TIME = 60
 
@@ -84,6 +85,16 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
       }
     }
 
+    case 'SKIP_TO_END': {
+      const remaining = state.questions.length - state.answers.length
+      return {
+        ...state,
+        phase: 'finished',
+        answers: [...state.answers, ...Array(remaining).fill(null)],
+        timeLeft: 0,
+      }
+    }
+
     case 'PLAY_AGAIN':
       return initialState
 
@@ -124,5 +135,10 @@ export function useQuiz() {
     []
   )
 
-  return { state, startQuiz, answer, advance, tick, playAgain }
+  const skipToEnd = useCallback(
+    () => dispatch({ type: 'SKIP_TO_END' }),
+    []
+  )
+
+  return { state, startQuiz, answer, advance, tick, playAgain, skipToEnd }
 }
